@@ -33,9 +33,15 @@ namespace M17AB_TrabalhoModelo_17_18 {
                     throw new Exception("A password indicada não é válida, tem de ter pelo menos 5 letras.");
                 }
                 //validar o recaptcha
+                var respostaRecaptcha = Request.Form["g-Recaptcha-Response"];
+                var eValido = ReCaptcha.Validate(respostaRecaptcha);
+                if (!eValido)
+                    throw new Exception("Tem de provar que não é um robot...");
                 //registar o utilizador
+                BaseDados.Instance.registarUtilizador(email, nome, morada, nif, password);
 
                 //redirecionar para index
+                Response.Redirect("index.aspx");
             } catch (Exception erro) {
                 lbErro.Text = "Ocorreu o seguinte erro: " + erro.Message;
                 lbErro.CssClass = "alert alert-danger";
