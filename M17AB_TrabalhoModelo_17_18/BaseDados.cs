@@ -139,7 +139,7 @@ namespace M17AB_TrabalhoModelo_17_18 {
                 new SqlParameter() {ParameterName="@morada",SqlDbType=SqlDbType.VarChar,Value=morada },
                 new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.VarChar,Value=nif },
                 new SqlParameter() {ParameterName="@password",SqlDbType=SqlDbType.VarChar,Value=password },
-                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=0 },
+                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=1 },
                 new SqlParameter() {ParameterName="@perfil",SqlDbType=SqlDbType.Int,Value=1 },
             };
             return executaComando(sql, parametros);
