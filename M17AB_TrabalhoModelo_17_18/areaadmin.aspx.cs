@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -38,7 +39,7 @@ namespace M17AB_TrabalhoModelo_17_18 {
             //cache
             Response.CacheControl = "no-cache";
             //atualizar a grelha dos livros
-
+            atualizaGrelhaLivros();
         }
         protected void btAdicionarLivro_Click(object sender, EventArgs e) {
             try {
@@ -88,7 +89,35 @@ namespace M17AB_TrabalhoModelo_17_18 {
         }
 
         private void atualizaGrelhaLivros() {
-            
+            //limpar gridview
+            gvLivros.Columns.Clear();
+            gvLivros.DataSource = null;
+            gvLivros.DataBind();
+            //consulta bd
+            DataTable dados = BaseDados.Instance.listaLivros();
+            if (dados == null || dados.Rows.Count == 0) return;
+
+            //mostrar na gridview a consulta
+            //gvLivros.DataSource = dados;
+            //gvLivros.DataBind();
+
+            //configurar as colunas da gridview e datatable
+            DataColumn dcRemover = new DataColumn();
+            dcRemover.ColumnName = "Remover";
+            dcRemover.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcRemover);
+
+            DataColumn dcEditar = new DataColumn();
+            dcEditar.ColumnName = "Editar";
+            dcEditar.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcEditar);
+            //gridview
+            HyperLinkField hlRemover = new HyperLinkField();
+            hlRemover.HeaderText = "Remover"; //título da coluna
+            hlRemover.DataTextField = "Remover";    //campo associado
+            hlRemover.Text = "Remover Livro";   //texto clicavel
+            //criar um link removerlivro.aspx?nlivro=1
+            //TODO: continuar aqui
         }
         #endregion
         #region Utilizadores
