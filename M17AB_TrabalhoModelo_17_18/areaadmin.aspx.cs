@@ -111,13 +111,75 @@ namespace M17AB_TrabalhoModelo_17_18 {
             dcEditar.ColumnName = "Editar";
             dcEditar.DataType = Type.GetType("System.String");
             dados.Columns.Add(dcEditar);
+
+            //associar o datatable à grid
+            gvLivros.DataSource = dados;
+            //desativar a geração automatica das colunas
+            gvLivros.AutoGenerateColumns = false;
+
             //gridview
             HyperLinkField hlRemover = new HyperLinkField();
             hlRemover.HeaderText = "Remover"; //título da coluna
             hlRemover.DataTextField = "Remover";    //campo associado
             hlRemover.Text = "Remover Livro";   //texto clicavel
             //criar um link removerlivro.aspx?nlivro=1
-            //TODO: continuar aqui
+            hlRemover.DataNavigateUrlFormatString = "removerlivro.aspx?nlivro={0}";
+            hlRemover.DataNavigateUrlFields = new string[] {"nlivro"};
+            gvLivros.Columns.Add(hlRemover);
+            //coluna editar
+            HyperLinkField hlEditar = new HyperLinkField();
+            hlEditar.HeaderText = "Editar"; //título da coluna
+            hlEditar.DataTextField = "Editar";    //campo associado
+            hlEditar.Text = "Editar Livro";   //texto clicavel
+            //criar um link editarlivro.aspx?nlivro=1
+            hlEditar.DataNavigateUrlFormatString = "editarlivro.aspx?nlivro={0}";
+            hlEditar.DataNavigateUrlFields = new string[] { "nlivro" };
+            gvLivros.Columns.Add(hlEditar);
+
+            //restantes colunas
+            //nlivro
+            BoundField bfNlivro = new BoundField();
+            bfNlivro.HeaderText = "Nº Livro";
+            bfNlivro.DataField = "nlivro";
+            gvLivros.Columns.Add(bfNlivro);
+            //nome
+            BoundField bfNome = new BoundField();
+            bfNome.HeaderText = "Nome";
+            bfNome.DataField = "nome";
+            gvLivros.Columns.Add(bfNome);
+            //ano
+            BoundField bfAno = new BoundField();
+            bfAno.HeaderText = "Ano";
+            bfAno.DataField = "ano";
+            gvLivros.Columns.Add(bfAno);
+            //data aquisição
+            BoundField bfData = new BoundField();
+            bfData.HeaderText = "Data Aquisição";
+            bfData.DataField = "data_aquisicao";
+            bfData.DataFormatString = "{0:dd-MM-yyyy}";
+            gvLivros.Columns.Add(bfData);
+            //preço
+            BoundField bfPreco = new BoundField();
+            bfPreco.HeaderText = "Preço";
+            bfPreco.DataField = "preco";
+            bfPreco.DataFormatString = "{0:C}";
+            gvLivros.Columns.Add(bfPreco);
+            //estado
+            BoundField bfEstado = new BoundField();
+            bfEstado.HeaderText = "Estado";
+            bfEstado.DataField = "estado";
+            gvLivros.Columns.Add(bfEstado);
+            //capa
+            ImageField ifCapa = new ImageField();
+            ifCapa.HeaderText = "Capa";
+            int rand = new Random().Next(999999);
+            ifCapa.DataImageUrlFormatString = "~/Imagens/{0}.jpg?"+rand;
+            ifCapa.DataImageUrlField = "nlivro";
+            ifCapa.ControlStyle.Width = 100;
+            gvLivros.Columns.Add(ifCapa);
+
+            //associar o datatable à gridview
+            gvLivros.DataBind();
         }
         #endregion
         #region Utilizadores
