@@ -21,7 +21,14 @@ namespace M17AB_TrabalhoModelo_17_18 {
             }
 
             //configurar as gridviews
+            gvLivros.PageIndexChanging += new GridViewPageEventHandler(gvLivros_PageIndexChangingEvent);
+            gvLivros.AllowPaging = true;
+            gvLivros.PageSize = 5;
+        }
 
+        private void gvLivros_PageIndexChangingEvent(object sender, GridViewPageEventArgs e) {
+            gvLivros.PageIndex = e.NewPageIndex;
+            atualizaGrelhaLivros();
         }
         #region Livros
         protected void btLivros_Click(object sender, EventArgs e) {
@@ -83,6 +90,10 @@ namespace M17AB_TrabalhoModelo_17_18 {
                 }
                 //atualizar a grelha dos livros
                 atualizaGrelhaLivros();
+                tbAno.Text = "";
+                tbData.Text = "";
+                tbNome.Text = "";
+                tbPreco.Text = "";
             } catch(Exception erro) {
                 lbErro.Text = "Ocorreu o seguinte erro: " + erro.Message;
             }
