@@ -7,5 +7,7 @@
         Password:<asp:TextBox runat="server" ID="tbPassword" TextMode="Password"></asp:TextBox>
         <asp:Button ID="btLogin" runat="server" Text="Login" OnClick="btLogin_Click" />
         <asp:Label ID="lbErro" runat="server"></asp:Label>
+        <asp:Button ID="btRecuperar" runat="server" Text="Recuperar password"
+            CssClass="btn btn-danger" OnClick="btRecuperar_Click" />
     </div>
 </asp:Content>

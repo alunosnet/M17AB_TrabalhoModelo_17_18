@@ -10,25 +10,7 @@
 namespace M17AB_TrabalhoModelo_17_18 {
     
     
-    public partial class index {
-        
-        /// <summary>
-        /// divLogin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLogin;
-        
-        /// <summary>
-        /// tbEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbEmail;
+    public partial class recuperarPassword {
         
         /// <summary>
         /// tbPassword control.
@@ -40,13 +22,13 @@ namespace M17AB_TrabalhoModelo_17_18 {
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
         
         /// <summary>
-        /// btLogin control.
+        /// btPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btLogin;
+        protected global::System.Web.UI.WebControls.Button btPassword;
         
         /// <summary>
         /// lbErro control.
@@ -56,14 +38,5 @@ namespace M17AB_TrabalhoModelo_17_18 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbErro;
-        
-        /// <summary>
-        /// btRecuperar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btRecuperar;
     }
 }

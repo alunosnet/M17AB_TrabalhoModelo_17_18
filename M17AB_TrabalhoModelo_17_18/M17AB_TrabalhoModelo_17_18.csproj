@@ -100,6 +100,7 @@
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\jquery-3.1.1.min.js" />
     <Content Include="js\npm.js" />
+    <Content Include="recuperarPassword.aspx" />
     <Content Include="registo.aspx" />
     <Content Include="removerlivro.aspx" />
     <Content Include="removerutilizador.aspx" />
@@ -166,6 +167,13 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReCaptcha.cs" />
+    <Compile Include="recuperarPassword.aspx.cs">
+      <DependentUpon>recuperarPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="recuperarPassword.aspx.designer.cs">
+      <DependentUpon>recuperarPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="registo.aspx.cs">
       <DependentUpon>registo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

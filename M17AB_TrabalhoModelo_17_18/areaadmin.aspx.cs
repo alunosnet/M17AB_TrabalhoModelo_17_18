@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -24,7 +25,11 @@ namespace M17AB_TrabalhoModelo_17_18 {
             gvLivros.PageIndexChanging += new GridViewPageEventHandler(gvLivros_PageIndexChangingEvent);
             gvLivros.AllowPaging = true;
             gvLivros.PageSize = 5;
+
+            gvEmprestimos.RowCommand += new GridViewCommandEventHandler(gvEmprestimos_RowCommand);
         }
+
+
 
         #region Livros
         private void gvLivros_PageIndexChangingEvent(object sender, GridViewPageEventArgs e) {
@@ -410,8 +415,28 @@ namespace M17AB_TrabalhoModelo_17_18 {
             gvEmprestimos.DataSource = null;
             gvEmprestimos.DataBind();
 
-            DataTable dados = BaseDados.Instance.listaTodosEmprestimos();
+            DataTable dados;
+            if (cbEmprestimos.Checked)
+                dados = BaseDados.Instance.listaTodosEmprestimosPorConcluirComNomes();
+            else
+                dados= BaseDados.Instance.listaTodosEmprestimosComNomes();
             if (dados == null || dados.Rows.Count == 0) return;
+
+            //receber livro
+            ButtonField btReceberLivro = new ButtonField();
+            btReceberLivro.HeaderText = "Receber Livro";
+            btReceberLivro.Text = "Receber";
+            btReceberLivro.ButtonType = ButtonType.Button;
+            btReceberLivro.CommandName = "receber";
+            gvEmprestimos.Columns.Add(btReceberLivro);
+
+            //enviar email
+            ButtonField btEnviarEmail = new ButtonField();
+            btEnviarEmail.HeaderText = "Enviar email";
+            btEnviarEmail.Text = "Enviar";
+            btEnviarEmail.ButtonType = ButtonType.Button;
+            btEnviarEmail.CommandName = "enviar";
+            gvEmprestimos.Columns.Add(btEnviarEmail);
 
             gvEmprestimos.DataSource = dados;
             gvEmprestimos.DataBind();
@@ -419,7 +444,42 @@ namespace M17AB_TrabalhoModelo_17_18 {
 
         //adiciona emprestimo
         protected void btEAdicionar_Click(object sender, EventArgs e) {
+            try {
+                int idLeitor = int.Parse(ddUtilizador.SelectedValue);
+                int idLivro = int.Parse(ddLivro.SelectedValue);
+                DateTime data = DataDevolve.SelectedDate;
+                BaseDados.Instance.adicionarEmprestimo(idLivro, idLeitor, data);
+                atualizaGrelhaEmprestimos();
+                atualizaDDLivros();
+            } catch(Exception erro) {
+                lbEErro.Text = "Ocorreu o seguinte erro: " + erro.Message;
+                lbEErro.CssClass = "alert alert-danger";
+            }
+        }
 
+        private void gvEmprestimos_RowCommand(object sender, GridViewCommandEventArgs e) {
+            int linha = int.Parse(e.CommandArgument as string);
+            int idEmprestimo = int.Parse(gvEmprestimos.Rows[linha].Cells[2].Text);
+            if (e.CommandName == "receber") {
+                BaseDados.Instance.concluirEmprestimo(idEmprestimo);
+                atualizaGrelhaEmprestimos();
+                atualizaDDLivros();
+            }
+            if(e.CommandName== "enviar") {
+                string emailDeEnvio = "alunosnet@gmail.com";
+                string assunto = "Livro emprestado";
+                string mensagem = "Caro leitor deve devolver o livro que tem emprestado.";
+                DataTable dadosEmprestimo = BaseDados.Instance.devolveDadosEmprestimo(idEmprestimo);
+                DataTable dadosLeitor = BaseDados.Instance.devolveDadosUtilizador(
+                    int.Parse(dadosEmprestimo.Rows[0]["idutilizador"].ToString())
+                    );
+                string emailParaQuem = dadosLeitor.Rows[0]["email"].ToString();
+                string pwdEmail = ConfigurationManager.AppSettings["pwdEmail"].ToString();
+                BaseDados.enviarMail(emailDeEnvio, pwdEmail, emailParaQuem, assunto, mensagem);
+            }
+        }
+        protected void cbEmprestimos_CheckedChanged(object sender, EventArgs e) {
+            atualizaGrelhaEmprestimos();
         }
         #endregion
         #region consultas
@@ -427,8 +487,8 @@ namespace M17AB_TrabalhoModelo_17_18 {
 
         }
 
-        #endregion
 
+        #endregion
 
     }
 }
