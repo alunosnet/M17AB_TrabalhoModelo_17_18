@@ -26,11 +26,11 @@ namespace M17AB_TrabalhoModelo_17_18 {
             gvLivros.PageSize = 5;
         }
 
+        #region Livros
         private void gvLivros_PageIndexChangingEvent(object sender, GridViewPageEventArgs e) {
             gvLivros.PageIndex = e.NewPageIndex;
             atualizaGrelhaLivros();
         }
-        #region Livros
         protected void btLivros_Click(object sender, EventArgs e) {
             //mostrar div livros
             divLivros.Visible = true;
@@ -194,12 +194,231 @@ namespace M17AB_TrabalhoModelo_17_18 {
         }
         #endregion
         #region Utilizadores
+        //mostra a div dos utilizadores
         protected void btUtilizadores_Click(object sender, EventArgs e) {
+            //mostrar div utilizadores
+            divUtilizadores.Visible = true;
+            //esconder as restantes divs
+            divLivros.Visible = false;
+            divEmprestimos.Visible = false;
+            divConsultas.Visible = false;
+            //css botões
+            btLivros.CssClass = "btn btn-info";
+            btUtilizadores.CssClass = "btn btn-info active";
+            btEmprestimos.CssClass = "btn btn-info";
+            btConsultas.CssClass = "btn btn-info";
+            //cache
+            Response.CacheControl = "no-cache";
+            //atualizar a grelha dos utilizadores
+            atualizaGrelhaUtilizadores();
+        }
 
+        private void atualizaGrelhaUtilizadores() {
+            // limpar gridview
+            gvUtilizadores.Columns.Clear();
+            gvUtilizadores.DataSource = null;
+            gvUtilizadores.DataBind();
+
+            DataTable dados = BaseDados.Instance.listaTodosUtilizadores();
+
+            if (dados == null || dados.Rows.Count == 0) return;
+
+            //configurar as colunas da gridview e datatable
+            DataColumn dcRemover = new DataColumn();
+            dcRemover.ColumnName = "Remover";
+            dcRemover.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcRemover);
+
+            DataColumn dcEditar = new DataColumn();
+            dcEditar.ColumnName = "Editar";
+            dcEditar.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcEditar);
+
+            DataColumn dcBloquear = new DataColumn();
+            dcBloquear.ColumnName = "Bloquear";
+            dcBloquear.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcBloquear);
+
+            DataColumn dcHistorico = new DataColumn();
+            dcHistorico.ColumnName = "Historico";
+            dcHistorico.DataType = Type.GetType("System.String");
+            dados.Columns.Add(dcHistorico);
+
+            //associar o datatable à grid
+            gvUtilizadores.DataSource = dados;
+            //desativar a geração automatica das colunas
+            gvUtilizadores.AutoGenerateColumns = false;
+
+            //gridview
+            HyperLinkField hlRemover = new HyperLinkField();
+            hlRemover.HeaderText = "Remover"; //título da coluna
+            hlRemover.DataTextField = "Remover";    //campo associado
+            hlRemover.Text = "Remover Utilizador";   //texto clicavel
+            //criar um link removerlivro.aspx?nlivro=1
+            hlRemover.DataNavigateUrlFormatString = "removerutilizador.aspx?id={0}";
+            hlRemover.DataNavigateUrlFields = new string[] { "id" };
+            gvUtilizadores.Columns.Add(hlRemover);
+            //coluna editar
+            HyperLinkField hlEditar = new HyperLinkField();
+            hlEditar.HeaderText = "Editar"; //título da coluna
+            hlEditar.DataTextField = "Editar";    //campo associado
+            hlEditar.Text = "Editar Utilizador";   //texto clicavel
+            //criar um link editarlivro.aspx?nlivro=1
+            hlEditar.DataNavigateUrlFormatString = "editarutilizador.aspx?id={0}";
+            hlEditar.DataNavigateUrlFields = new string[] { "id" };
+            gvUtilizadores.Columns.Add(hlEditar);
+
+            //coluna para bloquear/desbloquear
+            HyperLinkField hlBloquear = new HyperLinkField();
+            hlBloquear.HeaderText = "Bloquear/Desbloquear"; //título da coluna
+            hlBloquear.DataTextField = "Bloquear";    //campo associado
+            hlBloquear.Text = "Bloquear/Desbloquear";   //texto clicavel
+            hlBloquear.DataNavigateUrlFormatString = "bloquearutilizador.aspx?id={0}";
+            hlBloquear.DataNavigateUrlFields = new string[] { "id" };
+            gvUtilizadores.Columns.Add(hlBloquear);
+            //histórico
+            HyperLinkField hlHistorico = new HyperLinkField();
+            hlHistorico.HeaderText = "Histórico"; //título da coluna
+            hlHistorico.DataTextField = "Historico";    //campo associado
+            hlHistorico.Text = "Ver histórico";   //texto clicavel
+            hlHistorico.DataNavigateUrlFormatString = "historico.aspx?id={0}";
+            hlHistorico.DataNavigateUrlFields = new string[] { "id" };
+            gvUtilizadores.Columns.Add(hlHistorico);
+
+            //restantes colunas
+            //id
+            BoundField bfId = new BoundField();
+            bfId.HeaderText = "Id";
+            bfId.DataField = "id";
+            gvUtilizadores.Columns.Add(bfId);
+            //email
+            BoundField bfEmail = new BoundField();
+            bfEmail.HeaderText = "Email";
+            bfEmail.DataField = "email";
+            gvUtilizadores.Columns.Add(bfEmail);
+            //nome
+            BoundField bfNome = new BoundField();
+            bfNome.HeaderText = "Nome";
+            bfNome.DataField = "nome";
+            gvUtilizadores.Columns.Add(bfNome);
+            //morada
+            BoundField bfMorada = new BoundField();
+            bfMorada.HeaderText = "Morada";
+            bfMorada.DataField = "morada";
+            gvUtilizadores.Columns.Add(bfMorada);
+            //nif
+            BoundField bfNif = new BoundField();
+            bfNif.HeaderText = "Nif";
+            bfNif.DataField = "nif";
+            gvUtilizadores.Columns.Add(bfNif);
+            //estado
+            BoundField bfEstado = new BoundField();
+            bfEstado.HeaderText = "Estado";
+            bfEstado.DataField = "estado";
+            gvUtilizadores.Columns.Add(bfEstado);
+            //perfil
+            BoundField bfPerfil = new BoundField();
+            bfPerfil.HeaderText = "Perfil";
+            bfPerfil.DataField = "perfil";
+            gvUtilizadores.Columns.Add(bfPerfil);
+
+            //associar o datatable à gridview
+            gvUtilizadores.DataBind();
+        }
+
+        //adicionar um utilizador
+        protected void btUAdicionarUtilizador_Click(object sender, EventArgs e) {
+            //validar os dados
+            try {
+                string email = tbUEmail.Text;
+                if (email == String.Empty || email.Contains("@") == false) {
+                    throw new Exception("O email indicado não é válido.");
+                }
+                string nome = tbUNome.Text;
+                if (nome == String.Empty || nome.Length < 3) {
+                    throw new Exception("O nome indicado não é válido, deve ter pelo menos 3 letras.");
+                }
+                string morada = tbUMorada.Text;
+                if (morada == String.Empty || morada.Length < 3) {
+                    throw new Exception("A morada indicada não é válida.");
+                }
+                string nif = tbUNif.Text;
+                int z = int.Parse(nif);
+                string password = tbUPassword.Text;
+                if (password == String.Empty || password.Length < 5) {
+                    throw new Exception("A password indicada não é válida, tem de ter pelo menos 5 letras.");
+                }
+                int perfil = int.Parse(ddPerfil.SelectedValue);
+                if (perfil != 0 && perfil != 1)
+                    throw new Exception("O perfil não é válido.");
+                //adicionar o utilizador
+                BaseDados.Instance.registarUtilizador(email, nome, morada, nif, password,1,perfil);
+
+
+            } catch (Exception erro) {
+                lbUErro.Text = "Ocorreu o seguinte erro: " + erro.Message;
+                lbUErro.CssClass = "alert alert-danger";
+            }
+            //atualizar a grelha
+            atualizaGrelhaUtilizadores();
         }
         #endregion
         #region Emprestimos
+        //mostra div emprestimos
         protected void btEmprestimos_Click(object sender, EventArgs e) {
+            //mostrar div emprestimos
+            divEmprestimos.Visible = true;
+            //esconder as restantes divs
+            divUtilizadores.Visible = false;
+            divLivros.Visible = false;
+            divConsultas.Visible = false;
+            //css botões
+            btLivros.CssClass = "btn btn-info";
+            btUtilizadores.CssClass = "btn btn-info";
+            btEmprestimos.CssClass = "btn btn-info active";
+            btConsultas.CssClass = "btn btn-info";
+            //cache
+            Response.CacheControl = "no-cache";
+            //atualizar a grelha dos emprestimos
+            atualizaGrelhaEmprestimos();
+            //atualizar dropdown utilizadores
+            atualizaDDUtilizadores();
+            //atualizar dropdown livros
+            atualizaDDLivros();
+        }
+
+        private void atualizaDDLivros() {
+            ddLivro.Items.Clear();
+            DataTable dados = BaseDados.Instance.listaLivrosDisponiveis();
+            foreach(DataRow livro in dados.Rows) {
+                ddLivro.Items.Add(new ListItem(livro[1].ToString(),
+                    livro[0].ToString()));
+            }
+        }
+
+        private void atualizaDDUtilizadores() {
+            ddUtilizador.Items.Clear();
+            DataTable dados = BaseDados.Instance.listaUtilizadoresDisponiveis();
+            foreach(DataRow utilizador in dados.Rows) {
+                ddUtilizador.Items.Add(new ListItem(utilizador[1].ToString(),
+                    utilizador[0].ToString()));
+            }
+        }
+
+        private void atualizaGrelhaEmprestimos() {
+            gvEmprestimos.Columns.Clear();
+            gvEmprestimos.DataSource = null;
+            gvEmprestimos.DataBind();
+
+            DataTable dados = BaseDados.Instance.listaTodosEmprestimos();
+            if (dados == null || dados.Rows.Count == 0) return;
+
+            gvEmprestimos.DataSource = dados;
+            gvEmprestimos.DataBind();
+        }
+
+        //adiciona emprestimo
+        protected void btEAdicionar_Click(object sender, EventArgs e) {
 
         }
         #endregion
@@ -207,7 +426,9 @@ namespace M17AB_TrabalhoModelo_17_18 {
         protected void btConsultas_Click(object sender, EventArgs e) {
 
         }
+
         #endregion
+
 
     }
 }

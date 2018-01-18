@@ -72,11 +72,13 @@
     </Content>
     <Content Include="areaadmin.aspx" />
     <Content Include="areacliente.aspx" />
+    <Content Include="bloquearutilizador.aspx" />
     <Content Include="css\bootstrap-theme.css.map" />
     <Content Include="css\bootstrap-theme.min.css.map" />
     <Content Include="css\bootstrap.css.map" />
     <Content Include="css\bootstrap.min.css.map" />
     <Content Include="editarlivro.aspx" />
+    <Content Include="editarutilizador.aspx" />
     <Content Include="index.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="MasterPage.Master" />
@@ -100,6 +102,7 @@
     <Content Include="js\npm.js" />
     <Content Include="registo.aspx" />
     <Content Include="removerlivro.aspx" />
+    <Content Include="removerutilizador.aspx" />
     <Content Include="TextFile1.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -119,12 +122,26 @@
       <DependentUpon>areacliente.aspx</DependentUpon>
     </Compile>
     <Compile Include="BaseDados.cs" />
+    <Compile Include="bloquearutilizador.aspx.cs">
+      <DependentUpon>bloquearutilizador.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="bloquearutilizador.aspx.designer.cs">
+      <DependentUpon>bloquearutilizador.aspx</DependentUpon>
+    </Compile>
     <Compile Include="editarlivro.aspx.cs">
       <DependentUpon>editarlivro.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="editarlivro.aspx.designer.cs">
       <DependentUpon>editarlivro.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editarutilizador.aspx.cs">
+      <DependentUpon>editarutilizador.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editarutilizador.aspx.designer.cs">
+      <DependentUpon>editarutilizador.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -162,6 +179,13 @@
     </Compile>
     <Compile Include="removerlivro.aspx.designer.cs">
       <DependentUpon>removerlivro.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="removerutilizador.aspx.cs">
+      <DependentUpon>removerutilizador.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="removerutilizador.aspx.designer.cs">
+      <DependentUpon>removerutilizador.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

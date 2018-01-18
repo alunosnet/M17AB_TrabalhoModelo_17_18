@@ -9,6 +9,7 @@
 	perfil int not null,
 	lnkRecuperar varchar(36)
 )
+
 CREATE TABLE Livros
 (
 	[nlivro] INT NOT NULL PRIMARY KEY identity,
