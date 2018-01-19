@@ -17,6 +17,17 @@ namespace M17AB_TrabalhoModelo_17_18 {
                 divEmprestimo.Visible = false;
                 divHistorico.Visible = false;
             }
+            //evento click no command button devolver
+            gvDevolver.RowCommand += new GridViewCommandEventHandler(gvDevolver_RowCommand);
+        }
+
+        private void gvDevolver_RowCommand(object sender, GridViewCommandEventArgs e) {
+            int linha = int.Parse(e.CommandArgument as string);
+            int id = int.Parse(gvDevolver.Rows[linha].Cells[1].Text);
+            if (e.CommandName == "devolver") {
+                BaseDados.Instance.concluirEmprestimo(id);
+                atualizaGrelhaDevolve();
+            }
         }
 
         protected void btEmprestimo_Click(object sender, EventArgs e) {
@@ -24,15 +35,42 @@ namespace M17AB_TrabalhoModelo_17_18 {
             divDevolver.Visible = false;
             divHistorico.Visible = false;
 
-            //todo: atualizagrelhaemprestimo
+            atualizaGrelhaEmprestimo();
         }
+        private void atualizaGrelhaEmprestimo() {
+            gvEmprestar.Columns.Clear();
+            gvEmprestar.DataSource = null;
+            gvEmprestar.DataBind();
 
+            gvEmprestar.DataSource = BaseDados.Instance.listaLivrosDisponiveis();
+
+            gvEmprestar.DataBind();
+        }
         protected void btDevolve_Click(object sender, EventArgs e) {
             divEmprestimo.Visible = false;
             divDevolver.Visible = true;
             divHistorico.Visible = false;
 
-            //todo: atualizagrelhaemprestimo
+            atualizaGrelhaDevolve();
+        }
+
+        private void atualizaGrelhaDevolve() {
+            gvDevolver.Columns.Clear();
+            gvDevolver.DataSource = null;
+            gvDevolver.DataBind();
+
+            int idUtilizador = int.Parse(Session["id"].ToString());
+            gvDevolver.DataSource = BaseDados.Instance.listaTodosEmprestimosPorConcluirComNomes(idUtilizador);
+
+            //botão devolver
+            ButtonField btDevolver = new ButtonField();
+            btDevolver.HeaderText = "Devolver";
+            btDevolver.Text = "Devolver";
+            btDevolver.CommandName = "devolver";
+            btDevolver.ButtonType = ButtonType.Button;
+            gvDevolver.Columns.Add(btDevolver);
+
+            gvDevolver.DataBind();
         }
 
         protected void btHistorico_Click(object sender, EventArgs e) {
@@ -40,7 +78,17 @@ namespace M17AB_TrabalhoModelo_17_18 {
             divDevolver.Visible = false;
             divHistorico.Visible = true;
 
-            //todo: atualizagrelhaemprestimo
+            atualizaGrelhaHistorico();
+        }
+        private void atualizaGrelhaHistorico() {
+            gvHistorico.Columns.Clear();
+            gvHistorico.DataSource = null;
+            gvHistorico.DataBind();
+
+            int idUtilizador = int.Parse(Session["id"].ToString());
+
+            gvHistorico.DataSource = BaseDados.Instance.listaTodosEmprestimosComNomes(idUtilizador);
+            gvHistorico.DataBind();
         }
     }
 }

@@ -104,5 +104,18 @@
         <asp:Label runat="server" ID="lbEErro" />
         <asp:Button runat="server" ID="btEAdicionar" Text="Adicionar" CssClass="btn btn-danger" OnClick="btEAdicionar_Click" />
     </div>
-    <div id="divConsultas" runat="server"></div>
+    <div id="divConsultas" runat="server">
+        <h3>Consultas</h3>
+        <br />
+        <asp:DropDownList runat="server" ID="ddConsula" AutoPostBack="true"
+            CssClass="form-control" OnSelectedIndexChanged="ddConsula_SelectedIndexChanged">
+            <asp:ListItem Value="0">Top de Leitores</asp:ListItem>
+            <asp:ListItem Value="1">Top de Livros</asp:ListItem>
+            <asp:ListItem Value="2">Empréstimo fora de prazo</asp:ListItem>
+            <asp:ListItem Value="3">Livros da última semana</asp:ListItem>
+            <asp:ListItem Value="4">Tempo médio de empréstimo</asp:ListItem>
+            <asp:ListItem Value="5">Leitores que levaram livro mais caro</asp:ListItem>
+        </asp:DropDownList>
+        <asp:GridView runat="server" ID="gvConsultas" CssClass="table table-responsive"></asp:GridView>
+    </div>
 </asp:Content>
