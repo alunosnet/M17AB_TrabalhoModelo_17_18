@@ -27,7 +27,9 @@ namespace M17AB_TrabalhoModelo_17_18 {
             gvLivros.PageSize = 5;
 
             gvEmprestimos.RowCommand += new GridViewCommandEventHandler(gvEmprestimos_RowCommand);
+            gvEmprestimos.PageIndexChanging += GvEmprestimos_PageIndexChanging;
         }
+
 
         #region Livros
         private void gvLivros_PageIndexChangingEvent(object sender, GridViewPageEventArgs e) {
@@ -408,11 +410,16 @@ namespace M17AB_TrabalhoModelo_17_18 {
             }
         }
 
+        private void GvEmprestimos_PageIndexChanging(object sender, GridViewPageEventArgs e) {
+            gvEmprestimos.PageIndex = e.NewPageIndex;
+            atualizaGrelhaEmprestimos();
+        }
         private void atualizaGrelhaEmprestimos() {
             gvEmprestimos.Columns.Clear();
             gvEmprestimos.DataSource = null;
             gvEmprestimos.DataBind();
-
+            gvEmprestimos.PageSize = 5;
+            gvEmprestimos.AllowPaging = true;
             DataTable dados;
             if (cbEmprestimos.Checked)
                 dados = BaseDados.Instance.listaTodosEmprestimosPorConcluirComNomes();
@@ -457,6 +464,7 @@ namespace M17AB_TrabalhoModelo_17_18 {
 
         private void gvEmprestimos_RowCommand(object sender, GridViewCommandEventArgs e) {
             int linha = int.Parse(e.CommandArgument as string);
+            if (linha >= gvEmprestimos.Rows.Count) return;
             int idEmprestimo = int.Parse(gvEmprestimos.Rows[linha].Cells[2].Text);
             if (e.CommandName == "receber") {
                 BaseDados.Instance.concluirEmprestimo(idEmprestimo);
